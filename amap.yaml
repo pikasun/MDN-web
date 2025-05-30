@@ -1,0 +1,52 @@
+openapi: 3.0.0
+info:
+  title: 高德地图 Web 服务 API
+  version: 1.0.0
+  description: 高德地图 Web 服务 API 的 OpenAPI 规范示例（部分接口）
+servers:
+  - url: https://restapi.amap.com/v3
+paths:
+  /geocode/geo:
+    get:
+      summary: 地理编码（地址转坐标）
+      description: 将详细地址转换为高德经纬度坐标
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+          description: 用户的高德Key
+        - name: address
+          in: query
+          required: true
+          schema:
+            type: string
+          description: 结构化地址信息
+        - name: city
+          in: query
+          required: false
+          schema:
+            type: string
+          description: 指定城市
+      responses:
+        '200':
+          description: 成功响应
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  info:
+                    type: string
+                  geocodes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        formatted_address:
+                          type: string
+                        location:
+                          type: string
