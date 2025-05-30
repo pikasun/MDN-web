@@ -1,34 +1,54 @@
 openapi: 3.0.0
 info:
-  title: 高德地图 Web 服务 API
-  version: 1.0.0
-  description: 高德地图 Web 服务 API 的 OpenAPI 规范示例（部分接口）
+  title: 高德地图地理编码 API
+  description: 提供结构化地址转经纬度的服务
+  version: "1.0.0"
 servers:
   - url: https://restapi.amap.com/v3
 paths:
   /geocode/geo:
     get:
       summary: 地理编码（地址转坐标）
-      description: 将详细地址转换为高德经纬度坐标
+      description: 根据结构化地址信息获取经纬度坐标
       parameters:
         - name: key
           in: query
+          description: 用户在高德地图官网申请的 Web 服务 API 类型 Key
           required: true
           schema:
             type: string
-          description: 用户的高德Key
         - name: address
           in: query
+          description: 结构化地址信息（如：北京市朝阳区阜通东大街6号）
           required: true
           schema:
             type: string
-          description: 结构化地址信息
         - name: city
           in: query
+          description: 指定查询的城市（如北京、beijing、010、110000）
           required: false
           schema:
             type: string
-          description: 指定城市
+        - name: sig
+          in: query
+          description: 数字签名
+          required: false
+          schema:
+            type: string
+        - name: output
+          in: query
+          description: 返回数据格式类型（JSON 或 XML，默认 JSON）
+          required: false
+          schema:
+            type: string
+            enum: [JSON, XML]
+            default: JSON
+        - name: callback
+          in: query
+          description: 回调函数名称，仅在 output=JSON 时有效
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: 成功响应
@@ -39,14 +59,56 @@ paths:
                 properties:
                   status:
                     type: string
+                    description: 返回结果状态值（0 表示失败，1 表示成功）
+                  count:
+                    type: string
+                    description: 返回结果的个数
                   info:
                     type: string
+                    description: 返回状态说明
                   geocodes:
                     type: array
+                    description: 地理编码信息列表
                     items:
                       type: object
                       properties:
-                        formatted_address:
+                        country:
                           type: string
+                          description: 国家
+                        province:
+                          type: string
+                          description: 省份名
+                        city:
+                          type: string
+                          description: 城市名
+                        citycode:
+                          type: string
+                          description: 城市编码
+                        district:
+                          type: string
+                          description: 区
+                        street:
+                          type: string
+                          description: 街道
+                        number:
+                          type: string
+                          description: 门牌
+                        adcode:
+                          type: string
+                          description: 区域编码
                         location:
                           type: string
+                          description: 坐标点（经度,纬度）
+                        level:
+                          type: string
+                          description: 匹配级别
+            application/xml:
+              schema:
+                type: string
+                description: XML 格式返回
+        '400':
+          description: 请求参数错误
+        '401':
+          description: 未授权
+        '500':
+          description: 服务器内部错误
