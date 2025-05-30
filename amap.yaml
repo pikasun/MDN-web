@@ -13,7 +13,7 @@ paths:
       parameters:
         - name: key
           in: query
-          description: 用户在高德地图官网申请的 Web 服务 API 类型 Key
+          description: 用户在高德地图官网申请的 Web 服务 API 类型 Key，默认值a6b29fd46647a8d3c92655d37d6e6772
           required: true
           schema:
             type: string
