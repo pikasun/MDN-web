@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: 高德地图地理编码 API
+  title: amap
   description: 提供结构化地址转经纬度的服务
   version: "1.0.0"
 servers:
